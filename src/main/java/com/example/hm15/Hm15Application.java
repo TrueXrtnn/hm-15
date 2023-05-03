@@ -10,4 +10,6 @@ public class Hm15Application {
         SpringApplication.run(Hm15Application.class, args);
     }
 
+    public static class EmployeeAlreadyAddedException {
+    }
 }
