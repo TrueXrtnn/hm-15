@@ -1,4 +1,4 @@
-package com.example.hm15;
+package exception;
 
 public class EmployeeStorageIsFullException extends RuntimeException{
 }

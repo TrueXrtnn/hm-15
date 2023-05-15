@@ -1,4 +1,4 @@
-package com.example.hm15;
+package exception;
 
 public class EmployeeAlreadyAddedException extends RuntimeException{
 }
