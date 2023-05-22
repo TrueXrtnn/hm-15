@@ -11,12 +11,13 @@ import java.util.*;
 public class EmployeeService {
     private static final int MAX_SIZE = 100;
     Map<String, Employee> employeesList = new HashMap(MAX_SIZE);
+    String[] departments = new String[]{"1", "2", "3", "4", "5"};
 
-    public Employee addEmployee(String surname, String name) {
+    public Employee addEmployee(String surname, String name, String patronymic, int departmentId, int salary) {
         if (employeesList.size() > MAX_SIZE) throw new EmployeeStorageIsFullException();
         var key = (surname + " " + name).toLowerCase();
         if (employeesList.containsKey(key)) throw new EmployeeAlreadyAddedException();
-        Employee employee = new Employee(surname, name);
+        Employee employee = new Employee(surname, name, patronymic, departmentId, salary);
         employeesList.put(key, employee);
         return employee;
     }
@@ -24,17 +25,18 @@ public class EmployeeService {
     public Employee findEmployee(String surname, String name) {
         var key = (surname + " " + name).toLowerCase();
         var person = employeesList.get(key);
-        if (person!=null) return person;
+        if (person != null) return person;
         else throw new EmployeeNotFoundException();
     }
 
     public Employee deleteEmployee(String surname, String name) {
         var key = (surname + " " + name).toLowerCase();
         var removed = employeesList.remove(key);
-        if (removed==null) throw new EmployeeNotFoundException();
+        if (removed == null) throw new EmployeeNotFoundException();
         else return removed;
     }
-    public Collection<Employee> getEmployees(){
+
+    public Collection<Employee> getEmployees() {
         return employeesList.values();
     }
 }

@@ -13,17 +13,18 @@ public class EmployeeController {
     }
 
     @GetMapping("/add")
-    public Employee add(@RequestParam String name, @RequestParam String surname) {
-        return employeeService.addEmployee(surname, name);
+    public Employee add(@RequestParam String surname, @RequestParam String name, @RequestParam String patronymic, @RequestParam int departmentId, @RequestParam int salary) {
+        return employeeService.addEmployee(surname, name, patronymic, departmentId, salary);
     }
 
     @GetMapping("/remove")
     public Employee remove(@RequestParam String name, @RequestParam String surname) {
         return employeeService.deleteEmployee(surname, name);
     }
+
     @GetMapping("/find")
-    public Employee find(@RequestParam String name, @RequestParam String surname){
-    return employeeService.findEmployee(surname,name);
+    public Employee find(@RequestParam String name, @RequestParam String surname) {
+        return employeeService.findEmployee(surname, name);
     }
 }
 
