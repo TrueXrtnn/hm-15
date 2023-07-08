@@ -1,5 +1,7 @@
-package com.example.hm15;
+package controller;
 
+import com.example.hm15.Employee;
+import service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/employee")

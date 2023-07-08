@@ -1,9 +1,11 @@
-package com.example.hm15;
+package service;
 
+import com.example.hm15.Employee;
 import exception.EmployeeAlreadyAddedException;
 import exception.EmployeeNotFoundException;
 import exception.EmployeeStorageIsFullException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -15,7 +17,7 @@ public class EmployeeService {
 
     public Employee addEmployee(String surname, String name, String patronymic, int departmentId, int salary) {
         if (employeesList.size() > MAX_SIZE) throw new EmployeeStorageIsFullException();
-        var key = (surname + " " + name).toLowerCase();
+        var key = (surname + " " + name+ " "+patronymic).toLowerCase();
         if (employeesList.containsKey(key)) throw new EmployeeAlreadyAddedException();
         Employee employee = new Employee(surname, name, patronymic, departmentId, salary);
         employeesList.put(key, employee);
@@ -39,4 +41,8 @@ public class EmployeeService {
     public Collection<Employee> getEmployees() {
         return employeesList.values();
     }
+
+   // public String validateInput(String name, String surname) {
+    //    return StringUtils.isAlpha(name) && StringUtils.isAlpha(surname);
+    //}
 }

@@ -1,6 +1,8 @@
-package com.example.hm15;
+package controller;
 
 
+import service.DepartmentService;
+import com.example.hm15.Employee;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +36,12 @@ public class DepartmentController {
     public Collection<Employee> all(@RequestParam int departmentId) {
         return departmentService.allDepartment(departmentId);
     }
+
+    @GetMapping("/sum")
+    public String sumSalary(@RequestParam int departmentId) {
+        return "Сумма зарплат отдела: " + departmentService.sumSalary(departmentId);
+    }
+
 
     @GetMapping("/all")
     public Map<Integer, List<Employee>> all() {

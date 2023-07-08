@@ -9,6 +9,7 @@ public class Employee {
     private String name;
     private String patronymic;
     private String department;
+    private String fullName;
     private int salary;
     private int departmentId;
 
@@ -17,9 +18,10 @@ public class Employee {
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
-        this.departmentId = departmentId;
         this.salary = salary;
+        this.departmentId = departmentId;
         number++;
+        this.fullName = surname + " " + name + " " + patronymic;
         this.id = getNumber();
     }
 
@@ -33,6 +35,10 @@ public class Employee {
 
     public String getPatronymic() {
         return patronymic;
+    }
+
+    public String getFullName() {
+        return fullName;
     }
 
     public int getDepartment() {
