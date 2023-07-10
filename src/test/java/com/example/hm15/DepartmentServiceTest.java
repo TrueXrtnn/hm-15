@@ -14,6 +14,7 @@ import service.EmployeeService;
 
 import java.util.*;
 
+
 import static com.example.hm15.Constants.EMPLOYEE_MAP_MOCK_TEST;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,12 +40,12 @@ public class DepartmentServiceTest {
         while (deptNum <= 5) {
             int employeesCounter = 0; //счетчик суммирует сотрудников в листе
             /**список куда попадают сотрудники сортированные по отделу*/
-            List<Employee> employeeListTest = new ArrayList<>(deptServ.allDepartment(deptNum));
+            List<Employee> employeeListTest = new ArrayList<>(deptServ.getEmployeesByDept(deptNum));
 
             /**цикл for проходит по сотрудникам в списке...*/
             for (int i = 0; i < employeeListTest.size(); i++) {
                 /**...получает номер отдела каждого сотрудника*/
-                int actual = employeeListTest.get(0).getDepartment();
+                int actual = employeeListTest.get(0).getDept();
                 /**...и сравнивает номер отдела deptNum(expected) с полученным actual для каждого сотрудника*/
                 assertEquals(deptNum, actual);
                 /**увеличиваем счетчик в каждой итерации*/
@@ -70,7 +71,7 @@ public class DepartmentServiceTest {
         /**циклом проходим по списку с суммами зарплат*/
         for (int i = 0; i < 5; i++) {
             /**получаем сумму зарплат из метода и кладем ее в actual*/
-            int actual = deptServ.sumSalary(deptNum);
+            int actual = deptServ.getSalarySumByDept(deptNum);
             /**сравниваем ожидаемое i-ое значение с фактическим, полученным из метода*/
             assertEquals(expected.get(i), actual);
             deptNum++;
@@ -89,7 +90,7 @@ public class DepartmentServiceTest {
         /**циклом проходим по списку с суммами зарплат*/
         for (int i = 0; i < 5; i++) {
             /**получаем сумму зарплат из метода и кладем ее в actual*/
-            Employee actual = deptServ.maxSalary(deptNum);
+            int actual = deptServ.getMaxSalaryByDept(deptNum);
             /**сравниваем ожидаемое i-ое значение с фактическим, полученным из метода*/
             assertEquals(expected.get(i), actual);
             deptNum++;
@@ -108,7 +109,7 @@ public class DepartmentServiceTest {
         /**циклом проходим по списку с суммами зарплат*/
         for (int i = 0; i < 5; i++) {
             /**получаем сумму зарплат из метода и кладем ее в actual*/
-            int actual = deptServ.minSalary(deptNum);
+            int actual = deptServ.getMinSalaryByDept(deptNum);
             /**сравниваем ожидаемое i-ое значение с фактическим, полученным из метода*/
             assertEquals(expected.get(i), actual);
             deptNum++;
@@ -121,14 +122,14 @@ public class DepartmentServiceTest {
         Mockito.when(emplServ.getEmployees()).thenReturn(EMPLOYEE_MAP_MOCK_TEST);
         /**создаю ожидаемую мапу*/
         Map<Integer, List<Employee>> expected = new HashMap<>(Map.of(
-                1, new ArrayList<>(deptServ.allDepartment(1)),
-                2, new ArrayList<>(deptServ.allDepartment(2)),
-                3, new ArrayList<>(deptServ.allDepartment(3)),
-                4, new ArrayList<>(deptServ.allDepartment(4)),
-                5, new ArrayList<>(deptServ.allDepartment(5))
+                1, new ArrayList<>(deptServ.getEmployeesByDept(1)),
+                2, new ArrayList<>(deptServ.getEmployeesByDept(2)),
+                3, new ArrayList<>(deptServ.getEmployeesByDept(3)),
+                4, new ArrayList<>(deptServ.getEmployeesByDept(4)),
+                5, new ArrayList<>(deptServ.getEmployeesByDept(5))
         ));
         /**кладу в actual мапу из тестируемого метода*/
-        Map<Integer, List<Employee>> actual = deptServ.allDepartment();
+        Map<Integer, List<Employee>> actual = deptServ.getAllEmployees();
         /**сравниваю результаты*/
         assertEquals(expected, actual);
     }
@@ -136,17 +137,17 @@ public class DepartmentServiceTest {
     @Test
     public void getEmployeeByDeptExceptionTest1() {
         /**Проверка на выброс исключения при неверном вводе номера отдела*/
-        assertThrows(EmployeeNotFoundException.class, () -> deptServ.allDepartment(0));
-        assertThrows(EmployeeNotFoundException.class, () -> deptServ.allDepartment(6));
+        assertThrows(EmployeeNotFoundException.class, () -> deptServ.getEmployeesByDept(0));
+        assertThrows(EmployeeNotFoundException.class, () -> deptServ.getEmployeesByDept(6));
 
-        assertThrows(EmployeeNotFoundException.class, () -> deptServ.sumSalary(0));
-        assertThrows(EmployeeNotFoundException.class, () -> deptServ.sumSalary(6));
+        assertThrows(EmployeeNotFoundException.class, () -> deptServ.getSalarySumByDept(0));
+        assertThrows(EmployeeNotFoundException.class, () -> deptServ.getSalarySumByDept(6));
 
-        assertThrows(EmployeeNotFoundException.class, () -> deptServ.maxSalary(0));
-        assertThrows(EmployeeNotFoundException.class, () -> deptServ.maxSalary(6));
+        assertThrows(EmployeeNotFoundException.class, () -> deptServ.getMaxSalaryByDept(0));
+        assertThrows(EmployeeNotFoundException.class, () -> deptServ.getMaxSalaryByDept(6));
 
-        assertThrows(EmployeeNotFoundException.class, () -> deptServ.minSalary(0));
-        assertThrows(EmployeeNotFoundException.class, () -> deptServ.minSalary(6));
+        assertThrows(EmployeeNotFoundException.class, () -> deptServ.getMinSalaryByDept(0));
+        assertThrows(EmployeeNotFoundException.class, () -> deptServ.getMinSalaryByDept(6));
     }
 
     @Test
@@ -160,12 +161,12 @@ public class DepartmentServiceTest {
         /**подставляем номера отделав в тест поочередно*/
         for (int i = 1; i <= 5; i++) {
             int finalI = i;
-            assertThrows(NullPointerException.class, () -> deptServ.allDepartment(finalI));
-            assertThrows(NullPointerException.class, () -> deptServ.sumSalary(finalI));
-            assertThrows(NullPointerException.class, () -> deptServ.maxSalary(finalI));
-            assertThrows(NullPointerException.class, () -> deptServ.minSalary(finalI));
+            assertThrows(NullPointerException.class, () -> deptServ.getEmployeesByDept(finalI));
+            assertThrows(NullPointerException.class, () -> deptServ.getSalarySumByDept(finalI));
+            assertThrows(NullPointerException.class, () -> deptServ.getMaxSalaryByDept(finalI));
+            assertThrows(NullPointerException.class, () -> deptServ.getMinSalaryByDept(finalI));
         }
-        assertThrows(NullPointerException.class, () -> deptServ.allDepartment());
+        assertThrows(NullPointerException.class, () -> deptServ.getAllEmployees());
     }
 
 }

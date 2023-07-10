@@ -3,75 +3,53 @@ package com.example.hm15;
 import java.util.Objects;
 
 public class Employee {
-    private static int number;
-    private final int id;
-    private String surname;
-    private String name;
-    private String patronymic;
-    private String department;
     private String fullName;
     private int salary;
-    private int departmentId;
+    private int dept;
+    private int id;
+    private static int idCounter = 0;
 
-
-    public Employee(String surname, String name, String patronymic, int departmentId, int salary) {
-        this.surname = surname;
-        this.name = name;
-        this.patronymic = patronymic;
+    public Employee(String fullName, int salary, int dept) {
+        this.fullName = fullName;
         this.salary = salary;
-        this.departmentId = departmentId;
-        number++;
-        this.fullName = surname + " " + name + " " + patronymic;
-        this.id = getNumber();
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
+        this.dept = dept;
+        this.id = idCounter++;
     }
 
     public String getFullName() {
         return fullName;
     }
 
-    public int getDepartment() {
-        return departmentId;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
-
-    @Override
-    public String toString() {
-        return "Emploee{" + "Фамилия='" + surname + '\'' + ", Имя='" + name + '\'' + ", Отчество='" + patronymic + '\'' + ", Отдел='" + department + '\'' + ", Зарплата=" + salary + '}';
-    }
-
-    private int getNumber() {
-        return number;
+    public int getDept() {
+        return dept;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setDepartment(int departmentId) {
-        this.departmentId = departmentId;
+    public int getSalary() {
+        return salary;
+    }
+
+    public static int getIdCounter() {
+        return idCounter;
+    }
+
+    public void setFullName(String firstName) {
+        this.fullName = firstName;
+    }
+
+    public void setDept(int dept) {
+        this.dept = dept;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -79,11 +57,22 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return id == employee.id && salary == employee.salary && departmentId == employee.departmentId && surname.equals(employee.surname) && name.equals(employee.name) && patronymic.equals(employee.patronymic) && department.equals(employee.department);
+        return fullName.equals(employee.fullName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, surname, name, patronymic, department, salary, departmentId);
+        int result = 17;
+        result = 31 * result + fullName.hashCode();
+        return result;
+    }
+
+
+    @Override
+    public String toString() {
+        return                  fullName +
+                " зарплата: " + salary +
+                ", отдел: " + dept +
+                ", id: " + id ;
     }
 }

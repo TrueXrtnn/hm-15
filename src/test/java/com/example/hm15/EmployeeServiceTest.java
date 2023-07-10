@@ -5,11 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import service.EmployeeService;
 
+
 import static com.example.hm15.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
-
-import java.util.Map;
 
 public class EmployeeServiceTest {
     private final EmployeeService employeeService = new EmployeeService();
@@ -17,7 +16,7 @@ public class EmployeeServiceTest {
     @BeforeEach
     public void setUp() {
         /**создаем сотрудника в мапе с заданными параметрами, он будет expected*/
-        employeeService.addEmployee(NAME_1, SURNAME_1, PATRONYMIC_1, DEPARTMENT_1, SALARY_1);
+        employeeService.addEmployee(FULL_NAME_1, SALARY_1, DEPARTMENT_1);
     }
 
     @Test
@@ -30,8 +29,10 @@ public class EmployeeServiceTest {
         /**сравниваю ожидаемую зарплату сотрудника и зарплату соответствующего сотрудника из коллекции*/
         assertEquals(SALARY_1, employeeService.getEmployees().get(FULL_NAME_1).getSalary());
         /**сравниваю ожидаемый отдел сотрудника и отдел соответствующего сотрудника из коллекции*/
-        assertEquals(DEPARTMENT_1, employeeService.getEmployees().get(FULL_NAME_1).getDepartment());
+        assertEquals(DEPARTMENT_1, employeeService.getEmployees().get(FULL_NAME_1).getDept());
     }
+
+
 
     @Test
     public void addEmployeeTest() {
@@ -47,7 +48,7 @@ public class EmployeeServiceTest {
         /**сравниваю ожидаемую зарплату сотрудника и зарплату соответствующего сотрудника из коллекции*/
         assertEquals(SALARY_1, employeeService.getEmployees().get(FULL_NAME_1).getSalary());
         /**сравниваю ожидаемый отдел сотрудника и отдел соответствующего сотрудника из коллекции*/
-        assertEquals(DEPARTMENT_1, employeeService.getEmployees().get(FULL_NAME_1).getDepartment());
+        assertEquals(DEPARTMENT_1, employeeService.getEmployees().get(FULL_NAME_1).getDept());
     }
 
     @Test
@@ -58,10 +59,10 @@ public class EmployeeServiceTest {
         for (int i = 0; i < 20; i++) {
             keyCounter++;
             keyFullName += keyCounter;
-            employeeService.getEmployees().put(keyFullName, new Employee(SURNAME_1, NAME_1, PATRONYMIC_1, DEPARTMENT_1, SALARY_1));
+            employeeService.getEmployees().put(keyFullName, new Employee(keyFullName, SALARY_1, DEPARTMENT_1));
         }
         /**проверяем метод на выброс исключения*/
-        assertThrows(EmployeeStorageIsFullException.class, () -> employeeService.addEmployee(SURNAME_2, NAME_2, PATRONYMIC_2, DEPARTMENT_2, SALARY_2));
+        assertThrows(EmployeeStorageIsFullException.class, () -> employeeService.addEmployee(FULL_NAME_2, SALARY_2, DEPARTMENT_2));
     }
 
     @Test
@@ -122,5 +123,3 @@ public class EmployeeServiceTest {
         assertTrue(actual.toString().contains(expected10));
     }
 }
-
-

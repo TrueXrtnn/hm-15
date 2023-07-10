@@ -4,30 +4,62 @@ import com.example.hm15.Employee;
 import service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/employee")
 @RestController
-@ResponseStatus
+@RequestMapping("/employee")
 public class EmployeeController {
-    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    EmployeeService es;
+
+    public EmployeeController(EmployeeService es) {
+        this.es = es;
+    }
+
+    @GetMapping("/")
+    public String getEmployees() {
+        return "<pre><h1><b>Список всех сотрудников:</b></h1>\n" + "" + es.printEmployees() + "<pre>";
     }
 
     @GetMapping("/add")
-    public Employee add(@RequestParam String surname, @RequestParam String name, @RequestParam String patronymic, @RequestParam int departmentId, @RequestParam int salary) {
-        return employeeService.addEmployee(surname, name, patronymic, departmentId, salary);
+    public String add(@RequestParam("name") String name,
+                      @RequestParam("salary") int salary,
+                      @RequestParam("dept") int dept) {
+        return "<h1>Сотрудник " + es.addEmployee(name, salary, dept) + " добавлен</h1>";
+    }
+
+    @GetMapping("/change")
+    public String change(@RequestParam("nameDeletingEmployee") String fullNameDeletingEmployee,
+                         @RequestParam("nameNewEmployee") String fullNameNewEmployee,
+                         @RequestParam("newSalary") int newSalary,
+                         @RequestParam("newDept") int newDept) {
+        es.changeEmployee(fullNameDeletingEmployee,
+                fullNameNewEmployee,
+                newSalary,
+                newDept);
+        return "<h1>Сотрудник: " + fullNameDeletingEmployee + " </h1>" +
+                "<h2><b>заменен </b></h2>" +
+                "<h1>сотрудником: " + fullNameNewEmployee + " </h1>" +
+                "<h2> зарплата: " + newSalary + "</h2>" +
+                "<h2> отдел: " +  newDept + "</h2>";
     }
 
     @GetMapping("/remove")
-    public Employee remove(@RequestParam String name, @RequestParam String surname) {
-        return employeeService.deleteEmployee(surname, name);
+    public String removeEmployee(@RequestParam("fullName") String fullName) {
+        try {
+            es.removeEmployee(fullName);
+        } catch (NullPointerException e) {
+            throw new RuntimeException("\u001B[31m Такого сотрудника не существует \u001B[0m");
+        }
+        return "<h1>Сотрудник " + fullName + " удален</h1>";
     }
 
     @GetMapping("/find")
-    public Employee find(@RequestParam String name, @RequestParam String surname) {
-        return employeeService.findEmployee(surname, name);
+    public String findEmployee(@RequestParam("fullName") String fullName) {
+        if (es.getEmployees().containsKey(fullName)) {
+            return "<h1>Сотрудник: " + es.getEmployees().get(fullName) + "</h1>";
+        } else {
+            return "<h1>Сотрудник не найден</h1>";
+        }
     }
-}
 
+}
 
