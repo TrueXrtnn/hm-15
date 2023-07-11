@@ -8,7 +8,6 @@ import service.EmployeeService;
 
 import static com.example.hm15.Constants.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 public class EmployeeServiceTest {
     private final EmployeeService employeeService = new EmployeeService();
